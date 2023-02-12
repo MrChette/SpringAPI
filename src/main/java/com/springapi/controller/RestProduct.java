@@ -48,8 +48,8 @@ public class RestProduct {
 	
 	//GET	/api/categories/{id}/products	Recupera todos los productos de una determinada categoría
 	@GetMapping("/categories/{id}/products")
-	public List<ProductModel> listAllProductsByCategory(@PathVariable(name = "id", required = true) Integer categoryId) {
-		return productService.listAllProductsByCategory(categoryId);
+	public List<ProductModel> listAllProductsByCategory(@PathVariable(name = "id", required = true) Integer id) {
+		return productService.listAllProductsByCategory(id);
 	}
 	
 	

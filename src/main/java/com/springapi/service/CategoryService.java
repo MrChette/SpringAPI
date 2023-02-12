@@ -12,10 +12,10 @@ public interface CategoryService {
 	//POST	/api/categories/{id}	Crea una nueva categoría
 	public abstract Category addCategory(CategoryModel categoryModel);
 	
-	//GET	/api/products/{id}	Recupera el producto correspondiente a ese id
-	public abstract Product findCategoryById(int id);
+	//PUT	/api/categories/{id}	Actualiza una categoría
+	//GET	/api/categories/{id}	Recupera la categoría correspondiente a ese id
 	
 	public abstract Category transform(CategoryModel categoryModel);
-	public abstract Category transform(Category category);
+	public abstract CategoryModel transform(Category category);
 
 }

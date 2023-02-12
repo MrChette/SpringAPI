@@ -28,5 +28,5 @@ public interface ProductService {
 	
 	
 	public abstract Product transform(ProductModel productModel);
-	public abstract Product transform(Product product);
+	public abstract ProductModel transform(Product product);
 }
