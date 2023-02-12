@@ -1,5 +1,6 @@
 package com.springapi.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -15,14 +16,14 @@ public class Product {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="idProduct")
-	private Long idProduct;
+	private long idProduct;
 	
 	private String name;
 	private String description;
 	private float price;
 	
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false,cascade = CascadeType.MERGE )
     @JoinColumn(name = "id_category", nullable = false)
     private Category category;
 
@@ -32,7 +33,7 @@ public class Product {
 	}
 
 
-	public Long getIdProduct() {
+	public long getIdProduct() {
 		return idProduct;
 	}
 

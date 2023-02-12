@@ -3,6 +3,7 @@ package com.springapi.entity;
 
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,22 +18,22 @@ public class Category {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
-	private Long id;
+	private long id;
 	private String name;
 	private String description;
 	
-	@OneToMany(mappedBy="category")
+	@OneToMany(mappedBy="category",cascade = CascadeType.REMOVE)
     private Set<Product> product;
 
 	public Category() {
 		super();
 	}
 
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

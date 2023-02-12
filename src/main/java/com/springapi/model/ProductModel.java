@@ -6,7 +6,7 @@ public class ProductModel {
 	private String name;
 	private String description;
 	private float price;
-	private int idCategory;
+	private long idCategory;
 	
 	public ProductModel() {
 		super();
@@ -14,7 +14,7 @@ public class ProductModel {
 
 	
 
-	public ProductModel(long id, String name, String description, float price, int idCategory) {
+	public ProductModel(long id, String name, String description, float price, long idCategory) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -57,11 +57,11 @@ public class ProductModel {
 		this.price = price;
 	}
 		
-	public int getIdCategory() {
+	public long getIdCategory() {
 		return idCategory;
 	}
 
-	public void setIdCategory(int idCategory) {
+	public void setIdCategory(long idCategory) {
 		this.idCategory = idCategory;
 	}
 

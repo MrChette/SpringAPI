@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.springapi.entity.Product;
 import com.springapi.model.ProductModel;
+import com.springapi.service.CategoryService;
 import com.springapi.service.ProductService;
 
 
@@ -24,58 +25,61 @@ import com.springapi.service.ProductService;
 public class RestProduct {
 	
 	@Autowired
+	@Qualifier("categoryServiceImpl")
+	private CategoryService categoryService;
+	
+	@Autowired
 	@Qualifier("productServiceImpl")
 	private ProductService productService;
 	
 	
-	//POST	/api/categories/{id}/product	Crea un nuevo producto para una categoría
+	//Crea un nuevo producto para una categoría
 	@PostMapping("/categories/{id}/product")
-	public ProductModel createProduct(@PathVariable (name="id", required = true) Integer id,@RequestBody ProductModel product) {
+	public ProductModel createProduct(@PathVariable (name="id", required = true) long id,@RequestBody ProductModel product) {
 			product.setIdCategory(id);
 			productService.addProduct(product);
 			System.out.println(product);
 		return product;
 	}
 	
+	//Actualiza el producto correspondiente a ese id
+	@PutMapping("/products/{id}")
+	public ProductModel updateProduct(@PathVariable(name = "id", required = true) long id,@RequestBody ProductModel product) {
+			product.setId(id);
+			productService.updateProduct(product);
+			System.out.println(product);
+		return product;
+		}
+		
+	//Elimina el producto correspondiente a ese id
+	@DeleteMapping("/products/{id}")
+	public void deleteProduct(@PathVariable long id) {
+		productService.removeProduct(id);
+	}
 	
 	
-	//GET	/api/products/{id}	Recupera el producto correspondiente a ese id
+	
+	
+	//Recupera el producto correspondiente a ese id
 	@GetMapping("/products/{id}")
-	public Product listProduct(@PathVariable(name = "id", required = true) Integer productId) {
-		return productService.findProductById(productId);
+	public ProductModel listProduct(@PathVariable(name = "id", required = true) long id) {
+		System.out.println(productService.findProductByIdModel(id));
+		return productService.findProductByIdModel(id);
 	}
 
 	
-	//GET	/api/categories/{id}/products	Recupera todos los productos de una determinada categoría
+	//Recupera todos los productos de una determinada categoría
 	@GetMapping("/categories/{id}/products")
-	public List<ProductModel> listAllProductsByCategory(@PathVariable(name = "id", required = true) Integer id) {
+	public List<ProductModel> listAllProductsByCategory(@PathVariable(name = "id", required = true) long id) {
 		return productService.listAllProductsByCategory(id);
 	}
-	
-	
-	//PUT	/api/products/{id}	Actualiza el producto correspondiente a ese id
-	@PutMapping("/products/{id}")
-	public ProductModel updateProduct(@PathVariable(name = "id", required = true) Integer productId,@RequestBody ProductModel product) {
-			product.setId(productId);
-			productService.addProduct(product);
-		return product;
-	}
-	
-	
+		
 	
 		
-	//DELETE	/api/products/{id}	Elimina el producto correspondiente a ese id
-	@DeleteMapping("/products/{id}")
-	public void deleteProduct(@PathVariable int productId) {
-		productService.removeProduct(productId);
-	}
 	
 	
-	//DELETE	/api/categories/{id}/products	Elimina todos los productos de una determinada categoría
-	@DeleteMapping("/categories/{id}/products")
-	public void deleteProductByCategory(@PathVariable int categoryId) {
-		productService.removeProductsInCategory(categoryId);
-	}
+	
+	
 	
 	
 	

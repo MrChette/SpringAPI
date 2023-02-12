@@ -1,9 +1,7 @@
 	package com.springapi.serviceImpl;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +14,7 @@ import com.springapi.model.CategoryModel;
 import com.springapi.model.ProductModel;
 import com.springapi.repository.CategoryRepository;
 import com.springapi.repository.ProductRepository;
+import com.springapi.service.CategoryService;
 import com.springapi.service.ProductService;
 
 
@@ -23,66 +22,60 @@ import com.springapi.service.ProductService;
 public class ProductServiceImpl implements ProductService {
 	
 	@Autowired
+	@Qualifier("categoryRepository")
+	private CategoryRepository categoryRepository;
+	
+	
+	@Autowired
 	@Qualifier("productRepository")
 	private ProductRepository productRepository;
 	
 	@Autowired
-	@Qualifier("categoryRepository")
-	private CategoryRepository categoryRepository;
-	
-	@Autowired
 	@Qualifier("categoryServiceImpl")
-	private CategoryServiceImpl categoryServiceImpl;
-	
-	
-	
+	private CategoryService categoryService;
+
 	
 	
 	@Override
 	public ProductModel addProduct(ProductModel productModel) {
-		productRepository.save(transform(productModel));
+			productRepository.save(transform(productModel));
 		return productModel;
 	}
-
 	
 	@Override
-	public List<ProductModel> listAllProductsByCategory(int id) {
-		System.out.println(id);
-		Stream<Object> category =categoryRepository.findById(id).stream().map(c->categoryServiceImpl.transform(c));
-		System.out.println(category);
-//		return productRepository.findAll().stream().filter(p -> p.getCategory() == category).map(c->transform(c)).collect(Collectors.toList());
-		return null;
-
+	public ProductModel updateProduct(ProductModel productModel) {
+			productRepository.save(transform(productModel));
+		return productModel;
 	}
-
+	
 	@Override
-	public Product findProductById(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ProductModel findProductByIdModel(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Product updateProduct(ProductModel productModel) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void removeProduct(int id) {
-		// TODO Auto-generated method stub
+	public void removeProduct(long id) {
+		productRepository.deleteById(id);
 		
 	}
+	
+	@Override
+	public void removeProductsInCategory(long id) {
+		List<ProductModel> productos = listAllProductsByCategory(id);
+		for(ProductModel p : productos) {
+			productRepository.deleteById(p.getId());
+		}
+	}
+	
+	@Override
+	public List<ProductModel> listAllProductsByCategory(long id) {
+			Category category = categoryService.transform(categoryService.findCategoryByIdModel(id));
+		return productRepository.findAll().stream().filter(p -> p.getCategory().getId() == category.getId()).map(c->transform(c)).collect(Collectors.toList());
+	}
 
 	@Override
-	public void removeProductsInCategory(int id) {
-		// TODO Auto-generated method stub
-		
+	public Product findProductById(long id) {
+		return productRepository.findByIdProduct(id);
+	}
+
+	@Override
+	public ProductModel findProductByIdModel(long id) {
+		return transform(productRepository.findByIdProduct(id));
 	}
 
 	@Override
