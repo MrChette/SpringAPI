@@ -1,5 +1,6 @@
 package com.springapi.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,8 +21,11 @@ import com.springapi.service.ProductService;
 @RequestMapping("/api")
 public class RestCategory {
 	
+	@Autowired
 	@Qualifier("categoryServiceImpl")
 	private CategoryService categoryService;
+	
+	@Autowired
 	@Qualifier("productServiceImpl")
 	private ProductService productService;
 	
@@ -42,7 +46,7 @@ public class RestCategory {
 	
 	
 	//PUT	/api/categories/{id}	Actualiza una categoría
-	@PutMapping("products/{id}")
+	@PutMapping("/categories/{id}")
 	public CategoryModel updateCategory(@PathVariable(name = "id", required = true) Integer categoryId,@RequestBody CategoryModel category) {
 			category.setId(categoryId);
 			categoryService.addCategory(category);

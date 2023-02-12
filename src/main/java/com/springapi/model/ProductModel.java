@@ -12,6 +12,8 @@ public class ProductModel {
 		super();
 	}
 
+	
+
 	public ProductModel(long id, String name, String description, float price, int idCategory) {
 		super();
 		this.id = id;
@@ -20,6 +22,8 @@ public class ProductModel {
 		this.price = price;
 		this.idCategory = idCategory;
 	}
+
+
 
 	public long getId() {
 		return id;

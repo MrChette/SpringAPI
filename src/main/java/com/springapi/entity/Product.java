@@ -13,7 +13,7 @@ public class Product {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
+	private Long idProduct;
 	
 	private String name;
 	private String description;
@@ -21,7 +21,7 @@ public class Product {
 	
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "category_id", nullable = false)
+    @JoinColumn(name = "id_category", nullable = false)
     private Category category;
 
 
@@ -30,23 +30,13 @@ public class Product {
 	}
 
 
-	public Product(Long id, String name, String description, float price, Category category) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.description = description;
-		this.price = price;
-		this.category = category;
+	public Long getIdProduct() {
+		return idProduct;
 	}
 
 
-	public Long getId() {
-		return id;
-	}
-
-
-	public void setId(Long id) {
-		this.id = id;
+	public void setIdProduct(Long idProduct) {
+		this.idProduct = idProduct;
 	}
 
 
@@ -92,9 +82,12 @@ public class Product {
 
 	@Override
 	public String toString() {
-		return "Product [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price
-				+ ", category=" + category + "]";
+		return "Product [idProduct=" + idProduct + ", name=" + name + ", description=" + description + ", price="
+				+ price + ", category=" + category + "]";
 	}
+
+
+	
 	
 	
 	

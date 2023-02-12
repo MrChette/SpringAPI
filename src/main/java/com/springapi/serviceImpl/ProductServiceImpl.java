@@ -1,7 +1,8 @@
-package com.springapi.serviceImpl;
+	package com.springapi.serviceImpl;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -64,8 +65,8 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public Product transform(ProductModel productModel) {
-		// TODO Auto-generated method stub
-		return null;
+		ModelMapper modelMapper = new ModelMapper();
+		return modelMapper.map(productModel, Product.class);
 	}
 
 	@Override

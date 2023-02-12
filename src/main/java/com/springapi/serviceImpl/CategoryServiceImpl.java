@@ -1,10 +1,14 @@
 package com.springapi.serviceImpl;
 
+import org.springframework.stereotype.Service;
+
 import com.springapi.entity.Category;
 import com.springapi.entity.Product;
 import com.springapi.model.CategoryModel;
 import com.springapi.service.CategoryService;
 
+
+@Service("categoryServiceImpl")
 public class CategoryServiceImpl implements CategoryService{
 
 	@Override

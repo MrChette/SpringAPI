@@ -20,18 +20,10 @@ public class Category {
 	private String description;
 	
 	@OneToMany(mappedBy="category")
-    private Set<Product> Product;
+    private Set<Product> product;
 
 	public Category() {
 		super();
-	}
-
-	public Category(Long id, String name, String description, Set<com.springapi.entity.Product> product) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.description = description;
-		Product = product;
 	}
 
 	public Long getId() {
@@ -59,19 +51,18 @@ public class Category {
 	}
 
 	public Set<Product> getProduct() {
-		return Product;
+		return product;
 	}
 
 	public void setProduct(Set<Product> product) {
-		Product = product;
+		this.product = product;
 	}
 
 	@Override
 	public String toString() {
-		return "Category [id=" + id + ", name=" + name + ", description=" + description + ", Product=" + Product + "]";
+		return "Category [id=" + id + ", name=" + name + ", description=" + description + ", product=" + product + "]";
 	}
-	
-	
+
 	
 	
 
