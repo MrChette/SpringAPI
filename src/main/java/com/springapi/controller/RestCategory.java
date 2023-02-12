@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.springapi.entity.Category;
 import com.springapi.model.CategoryModel;
 import com.springapi.service.CategoryService;
 import com.springapi.service.ProductService;
@@ -34,7 +33,7 @@ public class RestCategory {
 	
 	
 	
-	//POST	/api/categories/{id}	Crea una nueva categoría
+	//Crea una nueva categoría
 	@PostMapping("/categories/{id}")
 	public CategoryModel createCategory(@PathVariable (name="id", required = true) long id,@RequestBody CategoryModel category) {
 			category.setId(id);
@@ -43,13 +42,13 @@ public class RestCategory {
 	}
 	
 	//Elimina una categoría y todos sus productos (categoría correspondiente a ese id)
-		@DeleteMapping("/categories/{id}")
+	@DeleteMapping("/categories/{id}")
 		public void deleteProduct(@PathVariable long id) {
 			categoryService.removeCategory(id);
-		}
+	}
 	
 	
-	//PUT	/api/categories/{id}	Actualiza una categoría
+	//Actualiza una categoría
 	@PutMapping("/categories/{id}")
 	public CategoryModel updateCategory(@PathVariable(name = "id", required = true) long id,@RequestBody CategoryModel category) {
 			category.setId(id);

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.springapi.entity.Category;
 import com.springapi.entity.Product;
-import com.springapi.model.CategoryModel;
 import com.springapi.model.ProductModel;
 import com.springapi.repository.CategoryRepository;
 import com.springapi.repository.ProductRepository;

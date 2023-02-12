@@ -2,7 +2,7 @@ package com.springapi.serviceImpl;
 
 
 
-import java.util.List;
+
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +10,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.springapi.entity.Category;
-import com.springapi.entity.Product;
 import com.springapi.model.CategoryModel;
-import com.springapi.model.ProductModel;
 import com.springapi.repository.CategoryRepository;
 import com.springapi.repository.ProductRepository;
 import com.springapi.service.CategoryService;
-import com.springapi.service.ProductService;
 
 
 @Service("categoryServiceImpl")
@@ -36,8 +33,12 @@ public class CategoryServiceImpl implements CategoryService{
 
 	@Override
 	public Category addCategory(CategoryModel categoryModel) {
-		// TODO Auto-generated method stub
-		return null;
+		return categoryRepository.save(transform(categoryModel));
+	}
+	
+	@Override
+	public Category updateCategory(CategoryModel categoryModel) {
+		return categoryRepository.save(transform(categoryModel));
 	}
 	
 	@Override
@@ -67,6 +68,8 @@ public class CategoryServiceImpl implements CategoryService{
 		ModelMapper modelMapper=new ModelMapper();
 		return modelMapper.map(category, CategoryModel.class);
 	}
+
+
 
 
 
