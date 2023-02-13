@@ -38,7 +38,6 @@ public class RestProduct {
 	public ProductModel createProduct(@PathVariable (name="id", required = true) long id,@RequestBody ProductModel product) {
 			product.setIdCategory(id);
 			productService.addProduct(product);
-			System.out.println(product);
 		return product;
 	}
 	
@@ -47,9 +46,9 @@ public class RestProduct {
 	public ProductModel updateProduct(@PathVariable(name = "id", required = true) long id,@RequestBody ProductModel product) {
 			product.setId(id);
 			productService.updateProduct(product);
-			System.out.println(product);
 		return product;
-		}
+	}
+	
 		
 	//Elimina el producto correspondiente a ese id
 	@DeleteMapping("/products/{id}")
@@ -58,12 +57,9 @@ public class RestProduct {
 	}
 	
 	
-	
-	
 	//Recupera el producto correspondiente a ese id
 	@GetMapping("/products/{id}")
 	public ProductModel listProduct(@PathVariable(name = "id", required = true) long id) {
-		System.out.println(productService.findProductByIdModel(id));
 		return productService.findProductByIdModel(id);
 	}
 

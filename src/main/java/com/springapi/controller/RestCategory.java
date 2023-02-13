@@ -29,10 +29,7 @@ public class RestCategory {
 	@Qualifier("productServiceImpl")
 	private ProductService productService;
 	
-	
-	
-	
-	
+
 	//Crea una nueva categoría
 	@PostMapping("/categories/{id}")
 	public CategoryModel createCategory(@PathVariable (name="id", required = true) long id,@RequestBody CategoryModel category) {
@@ -56,7 +53,7 @@ public class RestCategory {
 		return category;
 	}
 	
-	//GET	/api/categories/{id}	Recupera la categoría correspondiente a ese id
+	//Recupera la categoría correspondiente a ese id
 	@GetMapping("/categories/{id}")
 	public CategoryModel listCategory(@PathVariable(name = "id", required = true) long id) {
 		return categoryService.findCategoryByIdModel(id);
