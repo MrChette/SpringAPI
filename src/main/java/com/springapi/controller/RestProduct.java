@@ -48,6 +48,7 @@ public class RestProduct {
 	public ResponseEntity<?> updateProduct(@PathVariable(name = "id", required = true) long id,@RequestBody ProductModel product) {
 			Product productM = productService.transform(productService.findProductByIdModel(id)) ;
 			product.setIdCategory(productM.getCategory().getId());
+			product.setId(id);
 		return ResponseEntity.ok(productService.updateProduct(product));
 	}
 	

@@ -59,11 +59,9 @@ public class ProductServiceImpl implements ProductService {
 	
 	@Override
 	public boolean removeProductsInCategory(long id) {
-		if(categoryRepository.findById(id)!=null) {
-			List<ProductModel> productos = listAllProductsByCategory(id);
-			for(ProductModel p : productos) {
-				productRepository.deleteById(p.getId());
-			}
+		List<ProductModel> products = listAllProductsByCategory(id);
+		if(!products.isEmpty()) {
+				products.stream().map(c -> removeProduct(c.getId())).collect(Collectors.toList());
 			return true;
 		}
 		return false;

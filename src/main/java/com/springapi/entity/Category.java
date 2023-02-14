@@ -1,6 +1,7 @@
 package com.springapi.entity;
 
 
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -22,11 +23,19 @@ public class Category {
 	private String name;
 	private String description;
 	
-	@OneToMany(mappedBy="category",cascade = CascadeType.REMOVE)
-    private Set<Product> product;
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
+	 private Set<Product> product;
 
 	public Category() {
 		super();
+	}
+
+	public Category(long id, String name, String description, Set<Product> product) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.product = product;
 	}
 
 	public long getId() {
@@ -66,6 +75,9 @@ public class Category {
 		return "Category [id=" + id + ", name=" + name + ", description=" + description + ", product=" + product + "]";
 	}
 
+	
+	
+	
 	
 	
 
