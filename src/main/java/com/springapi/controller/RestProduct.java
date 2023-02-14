@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import com.springapi.entity.Product;
 import com.springapi.model.ProductModel;
 import com.springapi.service.CategoryService;
 import com.springapi.service.ProductService;
@@ -44,7 +44,8 @@ public class RestProduct {
 	//Actualiza el producto correspondiente a ese id
 	@PutMapping("/products/{id}")
 	public ProductModel updateProduct(@PathVariable(name = "id", required = true) long id,@RequestBody ProductModel product) {
-			product.setId(id);
+			Product productM = productService.transform(productService.findProductByIdModel(id)) ;
+			product.setIdCategory(productM.getCategory().getId());
 			productService.updateProduct(product);
 		return product;
 	}

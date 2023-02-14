@@ -37,12 +37,6 @@ public class RestCategory {
 		return category;
 	}
 	
-	//Elimina una categoría y todos sus productos (categoría correspondiente a ese id)
-	@DeleteMapping("/categories/{id}")
-		public void deleteProduct(@PathVariable long id) {
-			categoryService.removeCategory(id);
-	}
-	
 	
 	//Actualiza una categoría
 	@PutMapping("/categories/{id}")
@@ -62,5 +56,11 @@ public class RestCategory {
 	@DeleteMapping("/categories/{id}/products")
 	public void deleteProductByCategory(@PathVariable long id) {
 		productService.removeProductsInCategory(id);
+	}
+	
+	//Elimina una categoría y todos sus productos (categoría correspondiente a ese id)
+	@DeleteMapping("/categories/{id}")
+		public void deleteProduct(@PathVariable long id) {
+			categoryService.removeCategory(id);
 	}
 }
