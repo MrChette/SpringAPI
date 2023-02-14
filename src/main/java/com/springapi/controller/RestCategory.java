@@ -31,9 +31,8 @@ public class RestCategory {
 	
 
 	//Crea una nueva categoría
-	@PostMapping("/categories/{id}")
-	public CategoryModel createCategory(@PathVariable (name="id", required = true) long id,@RequestBody CategoryModel category) {
-			category.setId(id);
+	@PostMapping("/categories")
+	public CategoryModel createCategory(@RequestBody CategoryModel category) {
 			categoryService.addCategory(category);
 		return category;
 	}
