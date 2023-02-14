@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,42 +37,53 @@ public class RestProduct {
 	
 	//Crea un nuevo producto para una categoría
 	@PostMapping("/categories/{id}/product")
-	public ProductModel createProduct(@PathVariable (name="id", required = true) long id,@RequestBody ProductModel product) {
+	public ResponseEntity<?> createProduct(@PathVariable (name="id", required = true) long id,@RequestBody ProductModel product) {
 			product.setIdCategory(id);
 			productService.addProduct(product);
-		return product;
+			return ResponseEntity.status(HttpStatus.CREATED).body(product);
 	}
 	
 	//Actualiza el producto correspondiente a ese id
 	@PutMapping("/products/{id}")
-	public ProductModel updateProduct(@PathVariable(name = "id", required = true) long id,@RequestBody ProductModel product) {
+	public ResponseEntity<?> updateProduct(@PathVariable(name = "id", required = true) long id,@RequestBody ProductModel product) {
 			Product productM = productService.transform(productService.findProductByIdModel(id)) ;
 			product.setIdCategory(productM.getCategory().getId());
-			productService.updateProduct(product);
-		return product;
-	}
-	
-		
-	//Elimina el producto correspondiente a ese id
-	@DeleteMapping("/products/{id}")
-	public void deleteProduct(@PathVariable long id) {
-		productService.removeProduct(id);
+		return ResponseEntity.ok(productService.updateProduct(product));
 	}
 	
 	
 	//Recupera el producto correspondiente a ese id
 	@GetMapping("/products/{id}")
-	public ProductModel listProduct(@PathVariable(name = "id", required = true) long id) {
-		return productService.findProductByIdModel(id);
+	public ResponseEntity<?> listProduct(@PathVariable(name = "id", required = true) long id) {
+		ProductModel productM = productService.findProductByIdModel(id);
+			if(productM==null)
+				return ResponseEntity.notFound().build();
+			else
+		return ResponseEntity.ok(productM);
 	}
 
 	
 	//Recupera todos los productos de una determinada categoría
 	@GetMapping("/categories/{id}/products")
-	public List<ProductModel> listAllProductsByCategory(@PathVariable(name = "id", required = true) long id) {
-		return productService.listAllProductsByCategory(id);
+	public ResponseEntity<?> listAllProductsByCategory(@PathVariable(name = "id", required = true) long id) {
+		List<ProductModel> productL = productService.listAllProductsByCategory(id);
+		if(productL.isEmpty())
+			return ResponseEntity.notFound().build();
+		else
+		return ResponseEntity.ok(productL);
 	}
 		
+	
+	//Elimina el producto correspondiente a ese id
+	@DeleteMapping("/products/{id}")
+	public ResponseEntity<?> deleteProduct(@PathVariable long id) {
+		boolean deleted  = productService.removeProduct(id);
+		if(deleted)
+			return ResponseEntity.ok().build();
+		else
+			return ResponseEntity.notFound().build();
+	}
+	
 	
 		
 	

@@ -48,17 +48,25 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	@Override
-	public void removeProduct(long id) {
-		productRepository.deleteById(id);
-		
+	public boolean removeProduct(long id) {
+		if(productRepository.findById(id)!=null) {
+			productRepository.deleteById(id);
+			return true;
+		}
+			return false;
+			
 	}
 	
 	@Override
-	public void removeProductsInCategory(long id) {
-		List<ProductModel> productos = listAllProductsByCategory(id);
-		for(ProductModel p : productos) {
-			productRepository.deleteById(p.getId());
+	public boolean removeProductsInCategory(long id) {
+		if(categoryRepository.findById(id)!=null) {
+			List<ProductModel> productos = listAllProductsByCategory(id);
+			for(ProductModel p : productos) {
+				productRepository.deleteById(p.getId());
+			}
+			return true;
 		}
+		return false;
 	}
 	
 	@Override
