@@ -62,11 +62,15 @@ public class RestCategory {
 	//Recupera la categoría correspondiente a ese id
 	@GetMapping("/categories/{id}")
 	public ResponseEntity<?> listCategory(@PathVariable(name = "id", required = true) long id) {
-		CategoryModel categoryM = categoryService.findCategoryByIdModel(id);
-		if(categoryM==null)
-			return ResponseEntity.notFound().build();
+		boolean exist = categoryService.findCategoryById(id)!=null;
+		System.out.println(exist);
+		if(exist) {
+			CategoryModel categoryM = categoryService.findCategoryByIdModel(id);
+			return ResponseEntity.ok(categoryM);
+		}
 		else
-		return ResponseEntity.ok(categoryM);
+			return ResponseEntity.notFound().build();
+		
 	}
 	
 	//Elimina todos los productos de una determinada categoría

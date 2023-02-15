@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.springapi.entity.Product;
 import com.springapi.model.ProductModel;
+import com.springapi.repository.CategoryRepository;
 import com.springapi.repository.ProductRepository;
 import com.springapi.service.CategoryService;
 import com.springapi.service.ProductService;
@@ -39,13 +40,22 @@ public class RestProduct {
 	@Qualifier("productRepository")
 	private ProductRepository productRepository;
 	
+	@Autowired
+	@Qualifier("categoryRepository")
+	private CategoryRepository categoryRepository;
+	
 	
 	//Crea un nuevo producto para una categoría
 	@PostMapping("/categories/{id}/product")
 	public ResponseEntity<?> createProduct(@PathVariable (name="id", required = true) long id,@RequestBody ProductModel product) {
-			product.setIdCategory(id);
-			productService.addProduct(product);
-			return ResponseEntity.status(HttpStatus.CREATED).body(product);
+			boolean exist = categoryRepository.findById(id)!=null;
+			if(exist) {
+				product.setIdCategory(id);
+				productService.addProduct(product);
+				return ResponseEntity.status(HttpStatus.CREATED).body(product);
+			}
+			return ResponseEntity.notFound().build();
+			
 	}
 	
 	//Actualiza el producto correspondiente a ese id si existe
@@ -67,22 +77,30 @@ public class RestProduct {
 	//Recupera el producto correspondiente a ese id
 	@GetMapping("/products/{id}")
 	public ResponseEntity<?> listProduct(@PathVariable(name = "id", required = true) long id) {
-		ProductModel productM = productService.findProductByIdModel(id);
-			if(productM==null)
-				return ResponseEntity.notFound().build();
-			else
+		boolean exist = productService.findProductById(id)!=null;
+			if(exist) {
+				ProductModel productM = productService.findProductByIdModel(id);
 				return ResponseEntity.ok(productM);
+			}
+			else
+				return ResponseEntity.notFound().build();
+				
 	}
 
 	
 	//Recupera todos los productos de una determinada categoría
 	@GetMapping("/categories/{id}/products")
 	public ResponseEntity<?> listAllProductsByCategory(@PathVariable(name = "id", required = true) long id) {
-		List<ProductModel> productL = productService.listAllProductsByCategory(id);
-		if(productL.isEmpty())
-			return ResponseEntity.notFound().build();
-		else
-			return ResponseEntity.ok(productL);
+		boolean exist = categoryRepository.findById(id)!=null;
+		if(exist) {
+			List<ProductModel> productL = productService.listAllProductsByCategory(id);
+			if(productL.isEmpty())
+				return ResponseEntity.notFound().build();
+			
+			else
+				return ResponseEntity.ok(productL);
+			}
+		return ResponseEntity.notFound().build();
 	}
 		
 	
