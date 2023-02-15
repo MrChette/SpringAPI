@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,21 +27,24 @@ public class UserController {
 	
 
 	@Autowired
+	@Qualifier("userService")
 	private UserService userService;
+	
+	
 	
 	@Autowired
 	private AuthenticationManager authenticationManager;
 		
 	@PostMapping("/login")
 	public com.springapi.entity.User login(@RequestParam("username") String username,
-			@RequestParam("password") String pwd) {
+			@RequestParam("password") String password) {
 		Authentication authentication = authenticationManager
-				.authenticate(new UsernamePasswordAuthenticationToken(username, pwd));
+				.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		com.springapi.entity.User usuario = userService.findUsuario(username);
 		String token = getJWTToken(username);
 		usuario.setUsername(username);
-		usuario.setPassword(pwd);
+		usuario.setPassword(password);
 		usuario.setToken(token);
 		return usuario;
 	}

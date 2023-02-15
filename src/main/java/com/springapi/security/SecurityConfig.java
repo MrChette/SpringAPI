@@ -1,6 +1,5 @@
 package com.springapi.security;
 
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,28 +10,22 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-	
+
 	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-		http.csrf().disable().
-		addFilterBefore(new JWTAuthoritationFilter(), UsernamePasswordAuthenticationFilter.class).
-		authorizeHttpRequests().
-		requestMatchers("/apia/**").authenticated().
-		anyRequest().permitAll();
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+			http.csrf().disable().addFilterBefore(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class).
+			authorizeHttpRequests().
+			requestMatchers("/api/**").authenticated().
+			anyRequest().permitAll();
 		return http.build();
 	}
-	
+
 	@Bean
-	AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) 
-			throws Exception{
-	return authenticationConfiguration.getAuthenticationManager();
-	}
-
+	AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
+		return authenticationConfiguration.getAuthenticationManager();
 }
-
-
+}
