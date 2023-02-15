@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springapi.model.CategoryModel;
+import com.springapi.repository.CategoryRepository;
 import com.springapi.service.CategoryService;
 import com.springapi.service.ProductService;
 
@@ -31,6 +32,10 @@ public class RestCategory {
 	@Qualifier("productServiceImpl")
 	private ProductService productService;
 	
+	@Autowired
+	@Qualifier("categoryRepository")
+	private CategoryRepository categoryRepository;
+	
 
 	//Crea una nueva categoría
 	@PostMapping("/categories")
@@ -40,12 +45,18 @@ public class RestCategory {
 	}
 	
 	
-	//Actualiza una categoría
+	//Actualiza una categoría si existe
 	@PutMapping("/categories/{id}")
 	public ResponseEntity<?> updateCategory(@PathVariable(name = "id", required = true) long id,@RequestBody CategoryModel category) {
+		boolean exist = categoryRepository.findById(id)!=null;
+		if(exist) {
 			category.setId(id);
-			categoryService.addCategory(category);
-		return ResponseEntity.ok(categoryService.updateCategory(category));
+			categoryService.updateCategory(category);
+			return ResponseEntity.ok(category);
+		}
+		else
+			return ResponseEntity.notFound().build();
+		
 	}
 	
 	//Recupera la categoría correspondiente a ese id
@@ -72,6 +83,7 @@ public class RestCategory {
 	//Elimina una categoría y todos sus productos (categoría correspondiente a ese id)
 	@DeleteMapping("/categories/{id}")
 	public ResponseEntity<?> deleteProduct(@PathVariable long id) {
+		
 		boolean deleted = categoryService.removeCategory(id);
 		if(deleted)
 			return ResponseEntity.ok().build();

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.springapi.entity.Product;
 import com.springapi.model.ProductModel;
+import com.springapi.repository.ProductRepository;
 import com.springapi.service.CategoryService;
 import com.springapi.service.ProductService;
 
@@ -34,6 +35,10 @@ public class RestProduct {
 	@Qualifier("productServiceImpl")
 	private ProductService productService;
 	
+	@Autowired
+	@Qualifier("productRepository")
+	private ProductRepository productRepository;
+	
 	
 	//Crea un nuevo producto para una categoría
 	@PostMapping("/categories/{id}/product")
@@ -43,13 +48,19 @@ public class RestProduct {
 			return ResponseEntity.status(HttpStatus.CREATED).body(product);
 	}
 	
-	//Actualiza el producto correspondiente a ese id
+	//Actualiza el producto correspondiente a ese id si existe
 	@PutMapping("/products/{id}")
 	public ResponseEntity<?> updateProduct(@PathVariable(name = "id", required = true) long id,@RequestBody ProductModel product) {
-			Product productM = productService.transform(productService.findProductByIdModel(id)) ;
-			product.setIdCategory(productM.getCategory().getId());
-			product.setId(id);
-		return ResponseEntity.ok(productService.updateProduct(product));
+			boolean exist = productRepository.findByIdProduct(id)!=null;
+			if(exist) {
+				Product productM = productService.transform(productService.findProductByIdModel(id)) ;
+				product.setIdCategory(productM.getCategory().getId());
+				product.setId(id);
+				productService.updateProduct(product);
+				return ResponseEntity.ok(product);
+			}
+			else
+				return ResponseEntity.notFound().build();
 	}
 	
 	
@@ -60,7 +71,7 @@ public class RestProduct {
 			if(productM==null)
 				return ResponseEntity.notFound().build();
 			else
-		return ResponseEntity.ok(productM);
+				return ResponseEntity.ok(productM);
 	}
 
 	
@@ -71,7 +82,7 @@ public class RestProduct {
 		if(productL.isEmpty())
 			return ResponseEntity.notFound().build();
 		else
-		return ResponseEntity.ok(productL);
+			return ResponseEntity.ok(productL);
 	}
 		
 	

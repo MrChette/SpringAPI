@@ -44,12 +44,12 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public ProductModel updateProduct(ProductModel productModel) {
 			productRepository.save(transform(productModel));
-		return productModel;
+			return productModel;
 	}
 	
 	@Override
 	public boolean removeProduct(long id) {
-		if(productRepository.findById(id)!=null) {
+		if(productRepository.findByIdProduct(id)!=null) {
 			productRepository.deleteById(id);
 			return true;
 		}
@@ -59,10 +59,13 @@ public class ProductServiceImpl implements ProductService {
 	
 	@Override
 	public boolean removeProductsInCategory(long id) {
-		List<ProductModel> products = listAllProductsByCategory(id);
-		if(!products.isEmpty()) {
-				products.stream().map(c -> removeProduct(c.getId())).collect(Collectors.toList());
-			return true;
+		if(categoryRepository.findById(id)!=null) {
+			List<ProductModel> products = listAllProductsByCategory(id);
+			if(!products.isEmpty()) {
+					products.stream().map(c -> removeProduct(c.getId())).collect(Collectors.toList());
+				return true;
+			}
+			return false;
 		}
 		return false;
 	}
