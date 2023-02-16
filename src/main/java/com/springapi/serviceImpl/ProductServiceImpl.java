@@ -98,4 +98,4 @@ public class ProductServiceImpl implements ProductService {
 		return modelMapper.map(product, ProductModel.class);
 	}
 
-}
+}	

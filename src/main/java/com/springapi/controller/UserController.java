@@ -66,7 +66,7 @@ public class UserController {
 										.map(GrantedAuthority::getAuthority)
 										.collect(Collectors.toList()))
 			.setIssuedAt(new Date(System.currentTimeMillis()))
-			.setExpiration(new Date(System.currentTimeMillis()+60000))
+			.setExpiration(new Date(System.currentTimeMillis()+600000))
 			.signWith(SignatureAlgorithm.HS512,
 					secretKey.getBytes()).compact();
 	return "Bearer " + token;
