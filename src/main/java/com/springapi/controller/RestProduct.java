@@ -94,11 +94,7 @@ public class RestProduct {
 		boolean exist = categoryRepository.findById(id)!=null;
 		if(exist) {
 			List<ProductModel> productL = productService.listAllProductsByCategory(id);
-			if(productL.isEmpty())
-				return ResponseEntity.notFound().build();
-			
-			else
-				return ResponseEntity.ok(productL);
+			return ResponseEntity.ok(productL);
 			}
 		return ResponseEntity.notFound().build();
 	}
