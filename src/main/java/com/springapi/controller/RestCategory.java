@@ -55,7 +55,7 @@ public class RestCategory {
 			return ResponseEntity.ok(category);
 		}
 		else
-			return ResponseEntity.notFound().build();
+			return ResponseEntity.noContent().build();
 		
 	}
 	
@@ -63,13 +63,12 @@ public class RestCategory {
 	@GetMapping("/categories/{id}")
 	public ResponseEntity<?> listCategory(@PathVariable(name = "id", required = true) long id) {
 		boolean exist = categoryService.findCategoryById(id)!=null;
-		System.out.println(exist);
 		if(exist) {
 			CategoryModel categoryM = categoryService.findCategoryByIdModel(id);
 			return ResponseEntity.ok(categoryM);
 		}
 		else
-			return ResponseEntity.notFound().build();
+			return ResponseEntity.noContent().build();
 		
 	}
 	
@@ -80,7 +79,7 @@ public class RestCategory {
 		if(deleted)
 			return ResponseEntity.ok().build();
 		else
-			return ResponseEntity.notFound().build();
+			return ResponseEntity.noContent().build();
 		
 	}
 	
@@ -92,6 +91,6 @@ public class RestCategory {
 		if(deleted)
 			return ResponseEntity.ok().build();
 		else
-			return ResponseEntity.notFound().build();
+			return ResponseEntity.noContent().build();
 	}
 }

@@ -54,7 +54,7 @@ public class RestProduct {
 				productService.addProduct(product);
 				return ResponseEntity.status(HttpStatus.CREATED).body(product);
 			}
-			return ResponseEntity.notFound().build();
+			return ResponseEntity.noContent().build();
 			
 	}
 	
@@ -70,7 +70,7 @@ public class RestProduct {
 				return ResponseEntity.ok(product);
 			}
 			else
-				return ResponseEntity.notFound().build();
+				return ResponseEntity.noContent().build();
 	}
 	
 	
@@ -83,7 +83,7 @@ public class RestProduct {
 				return ResponseEntity.ok(productM);
 			}
 			else
-				return ResponseEntity.notFound().build();
+				return ResponseEntity.noContent().build();
 				
 	}
 
@@ -96,7 +96,7 @@ public class RestProduct {
 			List<ProductModel> productL = productService.listAllProductsByCategory(id);
 			return ResponseEntity.ok(productL);
 			}
-		return ResponseEntity.notFound().build();
+		return ResponseEntity.noContent().build();
 	}
 		
 	
@@ -107,7 +107,7 @@ public class RestProduct {
 		if(deleted)
 			return ResponseEntity.ok().build();
 		else
-			return ResponseEntity.notFound().build();
+			return ResponseEntity.noContent().build();
 	}
 	
 	
