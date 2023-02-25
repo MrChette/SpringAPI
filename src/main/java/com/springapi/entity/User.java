@@ -1,5 +1,8 @@
 package com.springapi.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,6 +22,8 @@ public class User {
 	private String role;
 	private String token;
 	
+	private ArrayList<Integer> listFavs;
+	
 	public User() {
 		super();
 	}
@@ -31,6 +36,18 @@ public class User {
 		this.enabled = enabled;
 		this.role = role;
 		this.token = token;
+	}
+
+	public User(long id, String username, String password, boolean enabled, String role, String token,
+			ArrayList<Integer> listFavs) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.enabled = enabled;
+		this.role = role;
+		this.token = token;
+		this.listFavs = listFavs;
 	}
 
 	public long getId() {
@@ -81,11 +98,22 @@ public class User {
 		this.token = token;
 	}
 
+	public ArrayList<Integer> getListFavs() {
+		return listFavs;
+	}
+
+	public void setListFavs(ArrayList<Integer> listFavs) {
+		this.listFavs = listFavs;
+	}
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", enabled=" + enabled
-				+ ", role=" + role + ", token=" + token + "]";
+				+ ", role=" + role + ", token=" + token + ", listFavs=" + listFavs + "]";
 	}
+	
+	
+	
 	
 	
 	

@@ -1,6 +1,6 @@
 	package com.springapi.controller;
 
-
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -38,15 +38,15 @@ public class RestCategory {
 	
 
 	//Crea una nueva categoría
-	@PostMapping("/categories")
+	@PostMapping("/admin/categories")
 	public ResponseEntity<?> createCategory(@RequestBody CategoryModel category) {
 			categoryService.addCategory(category);
 		return ResponseEntity.status(HttpStatus.CREATED).body(category);
 	}
-	
+		
 	
 	//Actualiza una categoría si existe
-	@PutMapping("/categories/{id}")
+	@PutMapping("/admin/categories/{id}")
 	public ResponseEntity<?> updateCategory(@PathVariable(name = "id", required = true) long id,@RequestBody CategoryModel category) {
 		boolean exist = categoryRepository.findById(id)!=null;
 		if(exist) {
@@ -60,7 +60,7 @@ public class RestCategory {
 	}
 	
 	//Recupera la categoría correspondiente a ese id
-	@GetMapping("/categories/{id}")
+	@GetMapping("/admin/categories/{id}")
 	public ResponseEntity<?> listCategory(@PathVariable(name = "id", required = true) long id) {
 		boolean exist = categoryService.findCategoryById(id)!=null;
 		if(exist) {
@@ -72,8 +72,10 @@ public class RestCategory {
 		
 	}
 	
+	
+	
 	//Elimina todos los productos de una determinada categoría
-	@DeleteMapping("/categories/{id}/products")
+	@DeleteMapping("/admin/categories/{id}/products")
 	public ResponseEntity<?> deleteProductByCategory(@PathVariable long id) {
 		boolean deleted = productService.removeProductsInCategory(id);
 		if(deleted)
@@ -84,7 +86,7 @@ public class RestCategory {
 	}
 	
 	//Elimina una categoría y todos sus productos (categoría correspondiente a ese id)
-	@DeleteMapping("/categories/{id}")
+	@DeleteMapping("/admin/categories/{id}")
 	public ResponseEntity<?> deleteProduct(@PathVariable long id) {
 		
 		boolean deleted = categoryService.removeCategory(id);
@@ -92,5 +94,17 @@ public class RestCategory {
 			return ResponseEntity.ok().build();
 		else
 			return ResponseEntity.noContent().build();
+	}
+	
+	@GetMapping("/all/categories")
+	public ResponseEntity<?> getCategories() {
+		boolean exist = categoryService.listAllCategories()!=null;
+		if(exist) {
+			List<CategoryModel> category=categoryService.listAllCategories();
+			return ResponseEntity.ok(category);
+		}
+		else
+			return ResponseEntity.noContent().build();
+
 	}
 }

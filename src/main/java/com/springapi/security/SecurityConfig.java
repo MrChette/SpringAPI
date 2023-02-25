@@ -17,10 +17,13 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-			http.csrf().disable().addFilterBefore(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class).
-			authorizeHttpRequests().
-			requestMatchers("/api/**").authenticated().
-			anyRequest().permitAll();
+		http.csrf().disable().
+		addFilterBefore(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class).
+		authorizeHttpRequests((requests) -> requests.
+				requestMatchers("/api/admin/**").hasRole("ADMIN").
+				requestMatchers("/api/user/**").hasRole("USER").
+				requestMatchers("/api/all/**").hasAnyRole("USER","ADMIN").				
+				requestMatchers("/**").permitAll().anyRequest().authenticated());
 		return http.build();
 	}
 

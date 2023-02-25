@@ -16,4 +16,5 @@ public interface ProductService {
 	public abstract boolean removeProduct(long id);
 	public abstract Product transform(ProductModel productModel);
 	public abstract ProductModel transform(Product product);
+	public abstract List<ProductModel> listAllProducts();
 }

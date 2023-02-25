@@ -75,6 +75,11 @@ public class ProductServiceImpl implements ProductService {
 			Category category = categoryService.transform(categoryService.findCategoryByIdModel(id));
 		return productRepository.findAll().stream().filter(p -> p.getCategory().getId() == category.getId()).map(c->transform(c)).collect(Collectors.toList());
 	}
+	
+	@Override
+	public List<ProductModel> listAllProducts() {
+		return productRepository.findAll().stream().map(c -> transform(c)).collect(Collectors.toList());
+	}
 
 	@Override
 	public Product findProductById(long id) {

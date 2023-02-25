@@ -4,6 +4,9 @@ package com.springapi.serviceImpl;
 
 
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -73,6 +76,12 @@ public class CategoryServiceImpl implements CategoryService{
 		return modelMapper.map(category, CategoryModel.class);
 	}
 
+	
+	@Override
+	public List<CategoryModel> listAllCategories() {
+		return categoryRepository.findAll().stream().
+				map(c->transform(c)).collect(Collectors.toList());
+	}
 
 
 

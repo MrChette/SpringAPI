@@ -1,5 +1,6 @@
 package com.springapi.serviceImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,6 +53,7 @@ public class UserService implements UserDetailsService {
 		user.setPassword(passwordEncoder().encode(user.getPassword()));
 		user.setEnabled(true);
 		user.setRole("ROLE_USER");
+		user.setListFavs(new ArrayList());
 		return userRepository.save(user);
 	}
 
@@ -87,5 +89,31 @@ public class UserService implements UserDetailsService {
 
 	public com.springapi.entity.User findUsuario(String username) {
 		return userRepository.findByUsername(username);
+	}
+	
+
+	
+	public com.springapi.entity.User addFav(int id,String username) {
+		com.springapi.entity.User u= findUsuario(username);
+		ArrayList<Integer> list = u.getListFavs();
+		list.add(id);
+		u.setListFavs(list);
+		System.out.println(list);
+		return userRepository.save(u);
+
+	}
+	
+	public com.springapi.entity.User delFav(int id,String username) {
+		com.springapi.entity.User u= findUsuario(username);
+		ArrayList<Integer> list = u.getListFavs();
+		list.remove(Integer.valueOf(id));
+		u.setListFavs(list);
+		return userRepository.save(u);
+	}
+	
+	public List<Integer> getFavs(String username) {
+		com.springapi.entity.User u= findUsuario(username);
+		ArrayList<Integer> list = u.getListFavs();
+		return list;
 	}
 }

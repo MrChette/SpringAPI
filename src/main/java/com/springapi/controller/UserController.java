@@ -57,7 +57,8 @@ public class UserController {
 
 	private String getJWTToken(String username) {
 	String secretKey = "mySecretKey";
-	List<GrantedAuthority> grantedAuthorities = AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_USER");
+	List<GrantedAuthority> grantedAuthorities = AuthorityUtils.commaSeparatedStringToAuthorityList(userService.findUsuario(username).getRole());
+	System.out.println(userService.findUsuario(username).getRole());
 	String token = Jwts
 			.builder()
 			.setId("softtekJWT")
