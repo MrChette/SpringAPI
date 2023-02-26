@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -51,8 +53,13 @@ public class UserController {
 
 
 	@PostMapping("/register")
-	public com.springapi.entity.User saveUser(@RequestBody com.springapi.entity.User user){
-		return userService.registrar(user);
+	public ResponseEntity<?> saveUser(@RequestBody com.springapi.entity.User user){
+		boolean exist = userService.findUsuario(user.getUsername())!=null;
+		if(exist) {
+			return ResponseEntity.internalServerError().body(null);
+		}else {
+			return ResponseEntity.status(HttpStatus.CREATED).body(userService.registrar(user));
+		}
 	}
 
 	private String getJWTToken(String username) {
